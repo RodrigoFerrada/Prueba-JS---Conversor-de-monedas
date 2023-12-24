@@ -33,26 +33,24 @@
               class="form-control my-2"
             />
             <p class="text-white m-0">Divisa a convertir:</p>
-            <select name="divisa" id="divisaSelect" class="form-select">
+            <select name="divisa" class="form-select">
               <option value="">Seleccione una divisa</option>
               <option value="dolar">Dolar</option>
               <option value="euro">Euro</option>
               <option value="uf">UF</option>
             </select>
-            <button type="submit" class="buscar btn btn-block btn-primary my-3">
+            <button type="submit" class="btn btn-block btn-primary my-3">
               Convertir
             </button>
           </form>
-          <div class="cambio text-center my-1 bg-warning text-danger">
+          <div class="text-center my-1 bg-warning text-danger">
             <h4 id="totalConverter"></h4>
           </div>
         </div>
       </section>
 
-      <div
-        class="graphic d-flex justify-content-center align-items-center my-1 p-0"
-      >
-        <canvas class="bg-warning" id="myChart"></canvas>
+      <div class="d-flex justify-content-center align-items-center my-1 p-0">
+        <canvas id="myChart"></canvas>
       </div>
     </main>
 

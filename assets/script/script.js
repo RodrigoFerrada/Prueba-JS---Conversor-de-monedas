@@ -30,14 +30,14 @@ const getDataDivisa = async (url, divisa) => {
 // Se agrega un evento de escucha al formulario que escucha el evento de envío ('submit').
 // Cuando se envía el formulario, se evita el comportamiento predeterminado (recargar la página),
 // se obtienen los valores del formulario (monto y divisa), se llama a 'getDataDivisa' para obtener los datos de la divisa seleccionada
-// y luego se llama a 'calculateValueDivisa' con el valor y los datos obtenidos.
+// y luego se llama a 'totalRenderHtml' con el valor y los datos obtenidos.
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const value = form.elements["value"].value;
   const divisa = form.elements["divisa"].value;
 
   const data = await getDataDivisa(url, divisa);
-  await calculateValueDivisa(value, data);
+  await totalRenderHtml(value, data);
 });
 
 // Se define una función 'totalConvertDivisa' que toma un valor y datos de divisa como parámetros.
@@ -48,9 +48,9 @@ const totalConvertDivisa = (value, data) => {
   return totalSwap.toFixed(2);
 };
 
-// Se define una función 'renderHtml' que toma un total como parámetro y actualiza el contenido del elemento con id 'totalConverter' en el DOM
+// Se define una función 'renderSwap' que toma un total como parámetro y actualiza el contenido del elemento con id 'totalConverter' en el DOM
 // con un mensaje que incluye el total. Si no hay datos, muestra "Resultado: $0".
-const renderHtml = (total) => {
+const renderSwap = (total) => {
   const resultString = total
     ? `Resultado: ${parseFloat(total)}`
     : "Resultado: $0";
@@ -74,19 +74,19 @@ const destroyChart = () => {
   }
 };
 
-// Se define una función asíncrona 'calculateValueDivisa' que toma un valor y datos de divisa como parámetros y llama a 'viewChart' con esos parámetros.
-const calculateValueDivisa = async (value, data) => {
-  viewChart(data, value);
+// Se define una función asíncrona 'totalRenderHtml' que toma un valor y datos de divisa como parámetros y llama a 'viewChart' con esos parámetros.
+const totalRenderHtml = async (value, data) => {
+  renderSwapChart(value, data);
 };
 
-// Se define una función 'viewChart' que toma datos y un valor como parámetros.
+// Se define una función 'renderSwapChart' que toma datos y un valor como parámetros.
 // Si no hay datos o la longitud de los datos es 0, muestra "Resultado: $0" en el DOM, destruye el gráfico y sale de la función.
 // Si hay datos, calcula el total, actualiza el DOM con el total y luego configura y renderiza un gráfico de línea utilizando Chart.js
 // con los últimos 10 días de datos.
-const viewChart = (data, value) => {
+const renderSwapChart = (value, data) => {
   if (!data || data.length === 0) {
     // No hay datos, mostrar 0 en el gráfico y en el DOM
-    renderHtml(0);
+    renderSwap(0);
     destroyChart();
     return;
   }
@@ -94,7 +94,7 @@ const viewChart = (data, value) => {
   const lastTenDaysData = data.slice(-10);
 
   const total = totalConvertDivisa(value, lastTenDaysData);
-  renderHtml(total);
+  renderSwap(total);
 
   const dateLabels = getDateDivisa(lastTenDaysData);
   const currencyValues = getValueDivisa(lastTenDaysData);
@@ -112,7 +112,7 @@ const viewChart = (data, value) => {
   };
 
   destroyChart();
-  chart.style.backgroundColor = "orangered";
+  chart.style.backgroundColor = "#ffc107";
   chart.style.color = "black";
   chart.style.borderRadius = "15px";
 
